@@ -10,7 +10,7 @@ var ConnectionString = builder.Configuration.GetConnectionString("ProcessoConnec
 
 builder.Services.AddDbContext<ContextAPI>(o => o.UseSqlServer(ConnectionString));
 
-
+builder.Services.AddSingleton(builder.Configuration);
 
 
 builder.Services.AddControllers();
@@ -21,6 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IServiceCandidato, ServiceCandidato>();
 builder.Services.AddScoped<IRepositoryCandidato, RepositoryCandidato>();
 builder.Services.AddScoped<IServiceEmail, ServiceEmail>();
+
 
 
 var app = builder.Build();

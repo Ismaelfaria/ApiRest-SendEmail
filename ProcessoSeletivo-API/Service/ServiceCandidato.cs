@@ -53,7 +53,7 @@ namespace ProcessoSeletivo_API.Service
         {
             try
             {
-                _repositoryCandidato.Delete(id);
+               _repositoryCandidato.Delete(id);
             }
             catch (Exception ex)
             {

@@ -38,11 +38,13 @@ namespace ProcessoSeletivo_API.Repository
             _context.SaveChanges();
         } 
 
-        public void Delete(Guid id)
+        public object Delete(Guid id)
         {
             var register = _context.Candidato.SingleOrDefault(c => c.Id == id);
             register.Deleted();
             _context.SaveChanges();
+
+            return register;
         }
     }
 }

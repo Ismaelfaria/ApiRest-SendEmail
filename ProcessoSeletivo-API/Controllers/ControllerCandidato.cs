@@ -18,8 +18,9 @@ namespace ProcessoSeletivo_API.Controllers
         {
             _serviceCandidato = serviceCandidato;
             _mailService = mailService;
-
         }
+
+        string subject = "EMPRESA-ISMAEL";
 
         [HttpGet]
         public IActionResult GetAll()
@@ -42,7 +43,7 @@ namespace ProcessoSeletivo_API.Controllers
         {
             var newRegister = _serviceCandidato.Create(candidato);
 
-            _mailService.SendEmail(candidato.Email.Email);
+            _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi realizado");
 
 
             return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
@@ -53,6 +54,8 @@ namespace ProcessoSeletivo_API.Controllers
         {
             _serviceCandidato.Update(id, candidato);
 
+            _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi atualizado");
+
             return NoContent();
         }
 
@@ -60,6 +63,8 @@ namespace ProcessoSeletivo_API.Controllers
         public IActionResult Delete(Guid id)
         {
             _serviceCandidato.Delete(id);
+
+            _mailService.SendEmail(_serviceCandidato, "EMPRESA-ISMAEL", "Seu cadastro foi deletado");
 
             return NoContent();
         }
