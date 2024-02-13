@@ -11,10 +11,14 @@ namespace ProcessoSeletivo_API.Controllers
     public class ControllerCandidato : ControllerBase
     {
         private readonly IServiceCandidato _serviceCandidato;
+        private readonly IServiceEmail _mailService;
 
-        public ControllerCandidato(IServiceCandidato serviceCandidato)
+
+        public ControllerCandidato(IServiceCandidato serviceCandidato, IServiceEmail mailService)
         {
             _serviceCandidato = serviceCandidato;
+            _mailService = mailService;
+
         }
 
         [HttpGet]
@@ -37,6 +41,9 @@ namespace ProcessoSeletivo_API.Controllers
         public IActionResult Create(Candidato candidato)
         {
             var newRegister = _serviceCandidato.Create(candidato);
+
+            _mailService.SendEmail(candidato.Email.Email);
+
 
             return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
         }

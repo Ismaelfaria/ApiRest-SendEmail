@@ -38,7 +38,10 @@ namespace ProcessoSeletivo_API.Service
         {
             try
             {
-                return _repositoryCandidato.Save(candidato);
+                candidato.Id = Guid.NewGuid();
+                candidato.Email.Id = Guid.NewGuid();
+                _repositoryCandidato.Save(candidato);
+                return candidato;
             }
             catch (Exception ex)
             {
