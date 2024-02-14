@@ -10,12 +10,12 @@ namespace ProcessoSeletivo_API.Service
         {
             _repositoryCandidato = repositoryCandidato;
         }
-        
+
         public IEnumerable<Candidato> FindAll()
         {
             try
             {
-               return _repositoryCandidato.FindAll();
+                return _repositoryCandidato.FindAll();
             }
             catch (Exception ex)
             {
@@ -34,13 +34,16 @@ namespace ProcessoSeletivo_API.Service
                 throw new Exception("Ocorreu um erro ao visualizar o paciente.(Service)", ex);
             }
         }
+
         public Candidato Create(Candidato candidato)
         {
             try
             {
                 candidato.Id = Guid.NewGuid();
                 candidato.Email.Id = Guid.NewGuid();
+
                 _repositoryCandidato.Save(candidato);
+
                 return candidato;
             }
             catch (Exception ex)
@@ -53,15 +56,13 @@ namespace ProcessoSeletivo_API.Service
         {
             try
             {
-               _repositoryCandidato.Delete(id);
+                _repositoryCandidato.Delete(id);
             }
             catch (Exception ex)
             {
                 throw new Exception("Ocorreu um erro ao deletar o paciente.(Service)", ex);
             }
         }
-
-        
 
         public void Update(Guid id, Candidato candidato)
         {

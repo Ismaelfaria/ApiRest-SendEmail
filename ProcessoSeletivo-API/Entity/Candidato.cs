@@ -4,10 +4,10 @@
     {
         public Candidato()
         {
-            IsDeleted = true;
+            IsDeleted = false;
         }
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public string Name { get; set; }
         public int CPF { get; set; }
         public List<string> Skils { get; set; }
         public EmailEntity Email { get; set; }

@@ -3,10 +3,9 @@ using System.Net;
 
 namespace ProcessoSeletivo_API.Service
 {
-    public class ServiceEmail:IServiceEmail
+    public class ServiceEmail : IServiceEmail
     {
         private readonly IConfiguration _configuration;
-
         public ServiceEmail(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -19,7 +18,7 @@ namespace ProcessoSeletivo_API.Service
 
         public void AddEmailsToMailmensager(MailMessage mailMessage, string email)
         {
-                mailMessage.To.Add(email);
+            mailMessage.To.Add(email);
         }
 
         public void SendEmail(string email, string subject, string body)

@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
 using ProcessoSeletivo_API.Entity;
 using ProcessoSeletivo_API.Service;
 
@@ -12,8 +11,6 @@ namespace ProcessoSeletivo_API.Controllers
     {
         private readonly IServiceCandidato _serviceCandidato;
         private readonly IServiceEmail _mailService;
-
-
         public ControllerCandidato(IServiceCandidato serviceCandidato, IServiceEmail mailService)
         {
             _serviceCandidato = serviceCandidato;
@@ -42,9 +39,7 @@ namespace ProcessoSeletivo_API.Controllers
         public IActionResult Create(Candidato candidato)
         {
             var newRegister = _serviceCandidato.Create(candidato);
-
             _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi realizado");
-
 
             return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
         }
@@ -53,7 +48,6 @@ namespace ProcessoSeletivo_API.Controllers
         public IActionResult Update(Guid id, Candidato candidato)
         {
             _serviceCandidato.Update(id, candidato);
-
             _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi atualizado");
 
             return NoContent();
@@ -64,14 +58,7 @@ namespace ProcessoSeletivo_API.Controllers
         {
             _serviceCandidato.Delete(id);
 
-            _mailService.SendEmail(_serviceCandidato, "EMPRESA-ISMAEL", "Seu cadastro foi deletado");
-
             return NoContent();
         }
-
-
-
-
-
     }
 }

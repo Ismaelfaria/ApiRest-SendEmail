@@ -7,11 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var ConnectionString = builder.Configuration.GetConnectionString("ProcessoConnection");
-
 builder.Services.AddDbContext<ContextAPI>(o => o.UseSqlServer(ConnectionString));
 
 builder.Services.AddSingleton(builder.Configuration);
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,8 +19,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IServiceCandidato, ServiceCandidato>();
 builder.Services.AddScoped<IRepositoryCandidato, RepositoryCandidato>();
 builder.Services.AddScoped<IServiceEmail, ServiceEmail>();
-
-
 
 var app = builder.Build();
 
@@ -34,9 +30,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

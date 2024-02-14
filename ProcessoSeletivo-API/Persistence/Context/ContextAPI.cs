@@ -5,9 +5,7 @@ namespace ProcessoSeletivo_API.Persistence.Context
 {
     public class ContextAPI : DbContext
     {
-        public ContextAPI(DbContextOptions<ContextAPI> options) : base(options)
-        {
-        }
+        public ContextAPI(DbContextOptions<ContextAPI> options) : base(options) { }
 
         public DbSet<Candidato> Candidato { get; set; }
         public DbSet<Candidato> Email { get; set; }
@@ -26,7 +24,5 @@ namespace ProcessoSeletivo_API.Persistence.Context
                 e.HasKey(c => c.Id);
             });
         }
-
-
     }
 }
