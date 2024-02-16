@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ProcessoSeletivo_API.Models.Profil;
 using ProcessoSeletivo_API.Persistence.Context;
 using ProcessoSeletivo_API.Repository;
 using ProcessoSeletivo_API.Service;
@@ -12,6 +13,10 @@ builder.Services.AddDbContext<ContextAPI>(o => o.UseSqlServer(ConnectionString))
 builder.Services.AddSingleton(builder.Configuration);
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(CandidatoProfile));
+builder.Services.AddAutoMapper(typeof(EmailProfile));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

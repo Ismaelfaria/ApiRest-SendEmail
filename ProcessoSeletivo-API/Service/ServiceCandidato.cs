@@ -1,4 +1,6 @@
-﻿using ProcessoSeletivo_API.Entity;
+﻿using AutoMapper;
+using ProcessoSeletivo_API.Entity;
+using ProcessoSeletivo_API.Models;
 using ProcessoSeletivo_API.Repository;
 
 namespace ProcessoSeletivo_API.Service
@@ -6,9 +8,12 @@ namespace ProcessoSeletivo_API.Service
     public class ServiceCandidato : IServiceCandidato
     {
         private readonly IRepositoryCandidato _repositoryCandidato;
-        public ServiceCandidato(IRepositoryCandidato repositoryCandidato)
+        private readonly IMapper _mapper;
+        public ServiceCandidato(IRepositoryCandidato repositoryCandidato, IMapper mapper)
         {
             _repositoryCandidato = repositoryCandidato;
+            _mapper = mapper;
+
         }
 
         public IEnumerable<Candidato> FindAll()
@@ -35,16 +40,18 @@ namespace ProcessoSeletivo_API.Service
             }
         }
 
-        public Candidato Create(Candidato candidato)
+        public Candidato Create(CandidatoInputModel candidato)
         {
             try
             {
-                candidato.Id = Guid.NewGuid();
-                candidato.Email.Id = Guid.NewGuid();
+                var input = _mapper.Map<Candidato>(candidato);
 
-                _repositoryCandidato.Save(candidato);
+                input.Id = Guid.NewGuid();
+                input.Email.Id = Guid.NewGuid();
 
-                return candidato;
+                _repositoryCandidato.Save(input);
+
+                return input;
             }
             catch (Exception ex)
             {
@@ -64,11 +71,12 @@ namespace ProcessoSeletivo_API.Service
             }
         }
 
-        public void Update(Guid id, Candidato candidato)
+        public void Update(Guid id, CandidatoInputModel candidato)
         {
             try
             {
-                _repositoryCandidato.Update(id, candidato);
+                var input = _mapper.Map<Candidato>(candidato);
+                _repositoryCandidato.Update(id, input);
             }
             catch (Exception ex)
             {

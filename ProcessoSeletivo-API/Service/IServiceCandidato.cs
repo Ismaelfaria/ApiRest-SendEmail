@@ -1,4 +1,5 @@
 ﻿using ProcessoSeletivo_API.Entity;
+using ProcessoSeletivo_API.Models;
 
 namespace ProcessoSeletivo_API.Service
 {
@@ -6,8 +7,8 @@ namespace ProcessoSeletivo_API.Service
     {
         IEnumerable<Candidato> FindAll();
         Candidato FindById(Guid id);
-        Candidato Create(Candidato candidato);
-        void Update(Guid id, Candidato candidato);
+        Candidato Create(CandidatoInputModel candidato);
+        void Update(Guid id, CandidatoInputModel candidato);
         void Delete(Guid id);
     }
 }

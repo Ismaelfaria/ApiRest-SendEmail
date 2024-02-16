@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using ProcessoSeletivo_API.Entity;
+using ProcessoSeletivo_API.Models;
 using ProcessoSeletivo_API.Service;
 
 namespace ProcessoSeletivo_API.Controllers
@@ -36,7 +36,7 @@ namespace ProcessoSeletivo_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Candidato candidato)
+        public IActionResult Create(CandidatoInputModel candidato)
         {
             var newRegister = _serviceCandidato.Create(candidato);
             _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi realizado");
@@ -45,7 +45,7 @@ namespace ProcessoSeletivo_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, Candidato candidato)
+        public IActionResult Update(Guid id, CandidatoInputModel candidato)
         {
             _serviceCandidato.Update(id, candidato);
             _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi atualizado");
