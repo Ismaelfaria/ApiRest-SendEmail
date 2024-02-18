@@ -83,5 +83,17 @@ namespace ProcessoSeletivo_API.Service
                 throw new Exception("Ocorreu um erro ao atualizar o paciente.(Service)", ex);
             }
         }
+
+        public Candidato FindByEmail(EmailInputModel email)
+        {
+            try
+            {
+                return _repositoryCandidato.FindByEmail(email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocorreu um erro ao visualizar o paciente.(Service)", ex);
+            }
+        }
     }
 }

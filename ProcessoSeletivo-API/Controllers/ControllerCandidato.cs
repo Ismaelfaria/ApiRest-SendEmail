@@ -35,10 +35,19 @@ namespace ProcessoSeletivo_API.Controllers
             return Ok(Register);
         }
 
+        [HttpGet("{email}")]
+        public IActionResult GetByEmail(EmailInputModel email)
+        {
+            var Register = _serviceCandidato.FindByEmail(email);
+
+            return Ok(Register);
+        }
+
         [HttpPost]
-        public IActionResult Create(CandidatoInputModel candidato)
+        public IActionResult Create([FromForm] CandidatoInputModel candidato)
         {
             var newRegister = _serviceCandidato.Create(candidato);
+
             _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi realizado");
 
             return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);

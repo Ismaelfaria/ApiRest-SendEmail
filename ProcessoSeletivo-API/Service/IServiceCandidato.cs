@@ -7,6 +7,7 @@ namespace ProcessoSeletivo_API.Service
     {
         IEnumerable<Candidato> FindAll();
         Candidato FindById(Guid id);
+        Candidato FindByEmail(EmailInputModel email);
         Candidato Create(CandidatoInputModel candidato);
         void Update(Guid id, CandidatoInputModel candidato);
         void Delete(Guid id);

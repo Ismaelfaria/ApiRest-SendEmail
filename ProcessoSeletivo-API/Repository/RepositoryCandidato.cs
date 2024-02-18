@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProcessoSeletivo_API.Entity;
+using ProcessoSeletivo_API.Models;
 using ProcessoSeletivo_API.Persistence.Context;
 using ProcessoSeletivo_API.Service;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ProcessoSeletivo_API.Repository
 {
@@ -71,6 +73,16 @@ namespace ProcessoSeletivo_API.Repository
                 Console.WriteLine($"O e-mail do candidato com o ID {id} é nulo.");
             }
 
+        }
+
+        public Candidato FindByEmail(EmailInputModel email)
+        {
+
+
+            bool resultado = string.Equals(texto1, texto2, StringComparison.OrdinalIgnoreCase);
+
+            var register =  _context.Candidato.Where(c => c.Email == email);
+            return register;
         }
     }
 }
