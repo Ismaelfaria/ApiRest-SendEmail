@@ -1,6 +1,7 @@
 ﻿
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using ProcessoSeletivo_API.ConteudoHTML;
 using ProcessoSeletivo_API.Models;
 using ProcessoSeletivo_API.Service;
 
@@ -21,6 +22,7 @@ namespace ProcessoSeletivo_API.Controllers
         }
 
         string subject = "EMPRESA-ISMAEL";
+        MensageOfConfimation mensageOfConfimation = new MensageOfConfimation();
 
         [HttpGet]
         public IActionResult GetAll()
@@ -80,7 +82,7 @@ namespace ProcessoSeletivo_API.Controllers
 
                 var newRegister = _serviceCandidato.Create(candidato);
 
-                _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi realizado");
+                _mailService.SendEmail(candidato.Email, subject, mensageOfConfimation.message);
 
                 return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
             }

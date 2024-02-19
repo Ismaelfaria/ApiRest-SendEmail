@@ -28,7 +28,7 @@ namespace ProcessoSeletivo_API.Service
                 AddEmailsToMailmensager(mailMessage, email);
                 mailMessage.Subject = subject;
                 mailMessage.Body = body;
-                mailMessage.IsBodyHtml = false;
+                mailMessage.IsBodyHtml = true;
 
                 using (SmtpClient smtp = new SmtpClient(SmtpAddress, PortNumber))
                 {
