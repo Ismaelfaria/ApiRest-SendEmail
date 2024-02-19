@@ -1,4 +1,5 @@
 ﻿
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoSeletivo_API.Models;
 using ProcessoSeletivo_API.Service;
@@ -11,10 +12,12 @@ namespace ProcessoSeletivo_API.Controllers
     {
         private readonly IServiceCandidato _serviceCandidato;
         private readonly IServiceEmail _mailService;
-        public ControllerCandidato(IServiceCandidato serviceCandidato, IServiceEmail mailService)
+        private readonly IValidator<CandidatoInputModel> _inputValidator;
+        public ControllerCandidato(IServiceCandidato serviceCandidato, IServiceEmail mailService, IValidator<CandidatoInputModel> inputValidator)
         {
             _serviceCandidato = serviceCandidato;
             _mailService = mailService;
+            _inputValidator = inputValidator;
         }
 
         string subject = "EMPRESA-ISMAEL";
@@ -22,52 +25,100 @@ namespace ProcessoSeletivo_API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var allRegister = _serviceCandidato.FindAll();
+            try
+            {
+                var allRegister = _serviceCandidato.FindAll();
 
-            return Ok(allRegister);
+                return Ok(allRegister);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Erro do GetAll(Controller): {ex.Message}");
+            }
         }
 
         [HttpGet("api/candidato/{id}")]
         public IActionResult GetById(Guid id)
         {
-            var Register = _serviceCandidato.FindById(id);
+            try
+            {
+                var Register = _serviceCandidato.FindById(id);
 
-            return Ok(Register);
+                return Ok(Register);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Erro do GetById(Controller): {ex.Message}");
+            }
         }
 
         [HttpGet("email/{email}")]
         public IActionResult GetByEmail(string email)
         {
-            var Register = _serviceCandidato.FindByEmail(email);
+            try
+            {
+                var Register = _serviceCandidato.FindByEmail(email);
 
-            return Ok(Register);
+                return Ok(Register);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Erro do GetByEmail(Controller): {ex.Message}");
+            }
         }
 
         [HttpPost]
         public IActionResult Create([FromForm] CandidatoInputModel candidato)
         {
-            var newRegister = _serviceCandidato.Create(candidato);
+            try
+            {
+                var validatorResult = _inputValidator.Validate(candidato);
+                if (!validatorResult.IsValid)
+                {
+                    return BadRequest(validatorResult.Errors);
+                }
 
-            _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi realizado");
+                var newRegister = _serviceCandidato.Create(candidato);
 
-            return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
+                _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi realizado");
+
+                return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Erro do Post(Controller): {ex.Message}");
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, CandidatoInputModel candidato)
         {
-            _serviceCandidato.Update(id, candidato);
-            _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi atualizado");
+            try
+            {
+                _serviceCandidato.Update(id, candidato);
+                _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi atualizado");
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Erro do Put(Controller): {ex.Message}");
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            _serviceCandidato.Delete(id);
+            try
+            {
+                _serviceCandidato.Delete(id);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Erro do Delete(Controller): {ex.Message}");
+            }
         }
     }
 }

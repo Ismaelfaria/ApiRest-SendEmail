@@ -1,4 +1,7 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using ProcessoSeletivo_API.Models;
+using ProcessoSeletivo_API.Models.Validations;
 using ProcessoSeletivo_API.Persistence.Context;
 using ProcessoSeletivo_API.Repository;
 using ProcessoSeletivo_API.Service;
@@ -22,6 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IServiceCandidato, ServiceCandidato>();
 builder.Services.AddScoped<IRepositoryCandidato, RepositoryCandidato>();
 builder.Services.AddScoped<IServiceEmail, ServiceEmail>();
+builder.Services.AddTransient<IValidator<CandidatoInputModel>, InputValidator>();
 
 var app = builder.Build();
 
