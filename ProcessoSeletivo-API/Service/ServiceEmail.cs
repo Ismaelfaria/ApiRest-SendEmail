@@ -10,7 +10,6 @@ namespace ProcessoSeletivo_API.Service
         {
             _configuration = configuration;
         }
-
         private string SmtpAddress => _configuration["EmailSettings:SmtpAddress"];
         private int PortNumber => int.Parse(_configuration["EmailSettings:PortNumber"]);
         private string EmailFromAddress => _configuration["EmailSettings:EmailFromAddress"];
