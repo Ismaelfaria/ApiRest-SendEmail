@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProcessoSeletivo_API.Entity;
-using ProcessoSeletivo_API.Models;
 using ProcessoSeletivo_API.Persistence.Context;
 using ProcessoSeletivo_API.Service;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ProcessoSeletivo_API.Repository
 {
@@ -21,7 +19,6 @@ namespace ProcessoSeletivo_API.Repository
         public IEnumerable<Candidato> FindAll()
         {
             return _context.Candidato
-           .Include(c => c.Email)
            .Where(c => !c.IsDeleted)
            .ToList();
         }
@@ -29,7 +26,6 @@ namespace ProcessoSeletivo_API.Repository
         public Candidato FindById(Guid id)
         {
             return _context.Candidato
-                .Include(c => c.Email)
                 .SingleOrDefault(c => c.Id == id);
         }
 
@@ -44,7 +40,7 @@ namespace ProcessoSeletivo_API.Repository
         public void Update(Guid id, Candidato input)
         {
             var register = _context.Candidato.SingleOrDefault(c => c.Id == id);
-            register.Update(input.Name, input.CPF, input.Skils);
+            register.Update(input.Name, input.CPF, input.Skils, input.Email);
 
             _context.SaveChanges();
         }
@@ -52,7 +48,6 @@ namespace ProcessoSeletivo_API.Repository
         public void Delete(Guid id)
         {
             var register = _context.Candidato
-                .Include(c => c.Email)
                 .SingleOrDefault(c => c.Id == id);
 
             if (register == null)
@@ -66,7 +61,7 @@ namespace ProcessoSeletivo_API.Repository
                 register.Deleted();
                 _context.SaveChanges();
 
-                _mailService.SendEmail(register.Email.Email, "EMPRESA-ISMAEL", "Seu cadastro foi deletado");
+                _mailService.SendEmail(register.Email, "EMPRESA-ISMAEL", "Seu cadastro foi deletado");
             }
             else
             {
@@ -75,14 +70,16 @@ namespace ProcessoSeletivo_API.Repository
 
         }
 
-        public Candidato FindByEmail(EmailInputModel email)
+        public Candidato FindByEmail(string email)
         {
+            var candidato = _context.Candidato.FirstOrDefault(c => c.Email == email);
 
+            if (candidato == null)
+            {
+                return null;
+            }
 
-            bool resultado = string.Equals(texto1, texto2, StringComparison.OrdinalIgnoreCase);
-
-            var register =  _context.Candidato.Where(c => c.Email == email);
-            return register;
+            return candidato;
         }
     }
 }

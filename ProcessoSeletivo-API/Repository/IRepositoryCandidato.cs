@@ -7,7 +7,7 @@ namespace ProcessoSeletivo_API.Repository
     {
         IEnumerable<Candidato> FindAll();
         Candidato FindById(Guid id);
-        Candidato FindByEmail(EmailInputModel email);
+        Candidato FindByEmail(string email);
         Candidato Save(Candidato candidato);
         void Update(Guid id, Candidato candidato);
         void Delete(Guid id);

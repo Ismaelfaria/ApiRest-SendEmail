@@ -27,7 +27,7 @@ namespace ProcessoSeletivo_API.Controllers
             return Ok(allRegister);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("api/candidato/{id}")]
         public IActionResult GetById(Guid id)
         {
             var Register = _serviceCandidato.FindById(id);
@@ -35,8 +35,8 @@ namespace ProcessoSeletivo_API.Controllers
             return Ok(Register);
         }
 
-        [HttpGet("{email}")]
-        public IActionResult GetByEmail(EmailInputModel email)
+        [HttpGet("email/{email}")]
+        public IActionResult GetByEmail(string email)
         {
             var Register = _serviceCandidato.FindByEmail(email);
 
@@ -48,7 +48,7 @@ namespace ProcessoSeletivo_API.Controllers
         {
             var newRegister = _serviceCandidato.Create(candidato);
 
-            _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi realizado");
+            _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi realizado");
 
             return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
         }
@@ -57,7 +57,7 @@ namespace ProcessoSeletivo_API.Controllers
         public IActionResult Update(Guid id, CandidatoInputModel candidato)
         {
             _serviceCandidato.Update(id, candidato);
-            _mailService.SendEmail(candidato.Email.Email, subject, "Seu cadastro foi atualizado");
+            _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi atualizado");
 
             return NoContent();
         }

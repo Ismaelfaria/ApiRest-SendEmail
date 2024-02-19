@@ -47,7 +47,6 @@ namespace ProcessoSeletivo_API.Service
                 var input = _mapper.Map<Candidato>(candidato);
 
                 input.Id = Guid.NewGuid();
-                input.Email.Id = Guid.NewGuid();
 
                 _repositoryCandidato.Save(input);
 
@@ -84,7 +83,7 @@ namespace ProcessoSeletivo_API.Service
             }
         }
 
-        public Candidato FindByEmail(EmailInputModel email)
+        public Candidato FindByEmail(string email)
         {
             try
             {

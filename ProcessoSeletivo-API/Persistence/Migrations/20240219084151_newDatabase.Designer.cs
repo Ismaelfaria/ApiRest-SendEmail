@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProcessoSeletivo_API.Persistence.Context;
 
@@ -11,9 +12,11 @@ using ProcessoSeletivo_API.Persistence.Context;
 namespace ProcessoSeletivo_API.Migrations
 {
     [DbContext(typeof(ContextAPI))]
-    partial class ContextAPIModelSnapshot : ModelSnapshot
+    [Migration("20240219084151_newDatabase")]
+    partial class newDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
