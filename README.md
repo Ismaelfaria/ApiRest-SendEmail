@@ -1,5 +1,5 @@
 <h4 align="center"> 
-	 Candidato API 
+	 Processo Seletivo API 
 </h4>
 
 <p align="center">
@@ -19,7 +19,7 @@
 
 Projeto desenvolvido durante a **[Estudos sobre Rest API]** de [Desenvolvimento de Software].
 
-O HospitalAPI é um projeto com o objetivo de implementar os conhecimentos de API Rest e envio de Email.
+O ProcessoSeletivoAPI é um projeto com o objetivo de implementar os conhecimentos de API Rest e envio de Email.
 
 ---
 
