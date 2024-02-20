@@ -22,7 +22,7 @@ namespace ProcessoSeletivo_API.Controllers
         }
 
         string subject = "EMPRESA-ISMAEL";
-        MensageOfConfimation mensageOfConfimation = new MensageOfConfimation();
+        MenssageHtmlForSendingEmail mensageOfConfimation = new MenssageHtmlForSendingEmail();
 
         [HttpGet]
         public IActionResult GetAll()
@@ -98,7 +98,7 @@ namespace ProcessoSeletivo_API.Controllers
             try
             {
                 _serviceCandidato.Update(id, candidato);
-                _mailService.SendEmail(candidato.Email, subject, "Seu cadastro foi atualizado");
+                _mailService.SendEmail(candidato.Email, subject, mensageOfConfimation.messageUpdate);
 
                 return NoContent();
             }

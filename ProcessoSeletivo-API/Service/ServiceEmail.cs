@@ -39,6 +39,5 @@ namespace ProcessoSeletivo_API.Service
                 }
             }
         }
-
     }
 }

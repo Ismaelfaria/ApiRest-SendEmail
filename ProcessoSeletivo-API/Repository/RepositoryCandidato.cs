@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ProcessoSeletivo_API.ConteudoHTML;
 using ProcessoSeletivo_API.Entity;
 using ProcessoSeletivo_API.Persistence.Context;
 using ProcessoSeletivo_API.Service;
@@ -16,6 +16,9 @@ namespace ProcessoSeletivo_API.Repository
             _mailService = mailService;
         }
 
+        string subject = "EMPRESA-ISMAEL";
+        MenssageHtmlForSendingEmail mensageOfConfimation = new MenssageHtmlForSendingEmail();
+
         public IEnumerable<Candidato> FindAll()
         {
             return _context.Candidato
@@ -26,7 +29,7 @@ namespace ProcessoSeletivo_API.Repository
         public Candidato FindById(Guid id)
         {
             return _context.Candidato
-                .SingleOrDefault(c => c.Id == id);
+            .SingleOrDefault(c => c.Id == id);
         }
 
         public Candidato Save(Candidato candidato)
@@ -48,7 +51,7 @@ namespace ProcessoSeletivo_API.Repository
         public void Delete(Guid id)
         {
             var register = _context.Candidato
-                .SingleOrDefault(c => c.Id == id);
+            .SingleOrDefault(c => c.Id == id);
 
             if (register == null)
             {
@@ -61,9 +64,8 @@ namespace ProcessoSeletivo_API.Repository
                 register.Deleted();
                 _context.SaveChanges();
 
-                _mailService.SendEmail(register.Email, "EMPRESA-ISMAEL", "Seu cadastro foi deletado");
-            }
-            else
+                _mailService.SendEmail(register.Email, subject, mensageOfConfimation.messageDeleted);
+            }else
             {
                 Console.WriteLine($"O e-mail do candidato com o ID {id} é nulo.");
             }

@@ -9,11 +9,11 @@ namespace ProcessoSeletivo_API.Service
     {
         private readonly IRepositoryCandidato _repositoryCandidato;
         private readonly IMapper _mapper;
+
         public ServiceCandidato(IRepositoryCandidato repositoryCandidato, IMapper mapper)
         {
             _repositoryCandidato = repositoryCandidato;
             _mapper = mapper;
-
         }
 
         public IEnumerable<Candidato> FindAll()
@@ -45,7 +45,6 @@ namespace ProcessoSeletivo_API.Service
             try
             {
                 var input = _mapper.Map<Candidato>(candidato);
-
                 input.Id = Guid.NewGuid();
 
                 _repositoryCandidato.Save(input);
