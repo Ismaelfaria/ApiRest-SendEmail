@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using ProcessoSeletivo_API.Entity;
 using ProcessoSeletivo_API.Models;
+using ProcessoSeletivo_API.Models.Validations;
 using ProcessoSeletivo_API.Repository;
 
 namespace ProcessoSeletivo_API.Service
@@ -9,11 +11,13 @@ namespace ProcessoSeletivo_API.Service
     {
         private readonly IRepositoryCandidato _repositoryCandidato;
         private readonly IMapper _mapper;
+        private readonly IValidator<CandidatoInputModel> _inputValidator;
 
-        public ServiceCandidato(IRepositoryCandidato repositoryCandidato, IMapper mapper)
+        public ServiceCandidato(IRepositoryCandidato repositoryCandidato, IMapper mapper, IValidator<CandidatoInputModel> inputValidator)
         {
             _repositoryCandidato = repositoryCandidato;
             _mapper = mapper;
+            _inputValidator = inputValidator;
         }
 
         public IEnumerable<Candidato> FindAll()
@@ -44,6 +48,13 @@ namespace ProcessoSeletivo_API.Service
         {
             try
             {
+                var validatorResult = _inputValidator.Validate(candidato);
+                if (!validatorResult.IsValid)
+                {
+                    throw new ValidationException("Erro de validação ao criar o paciente", validatorResult.Errors);
+                }
+
+
                 var input = _mapper.Map<Candidato>(candidato);
                 input.Id = Guid.NewGuid();
 

@@ -13,12 +13,11 @@ namespace ProcessoSeletivo_API.Controllers
     {
         private readonly IServiceCandidato _serviceCandidato;
         private readonly IServiceEmail _mailService;
-        private readonly IValidator<CandidatoInputModel> _inputValidator;
-        public ControllerCandidato(IServiceCandidato serviceCandidato, IServiceEmail mailService, IValidator<CandidatoInputModel> inputValidator)
+ 
+        public ControllerCandidato(IServiceCandidato serviceCandidato, IServiceEmail mailService)
         {
             _serviceCandidato = serviceCandidato;
             _mailService = mailService;
-            _inputValidator = inputValidator;
         }
 
         string subject = "EMPRESA-ISMAEL";
@@ -35,7 +34,7 @@ namespace ProcessoSeletivo_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, $"Erro do GetAll(Controller): {ex.Message}");
+                return StatusCode(404, $"Não tem registros: {ex.Message}");
             }
         }
 
@@ -50,7 +49,7 @@ namespace ProcessoSeletivo_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, $"Erro do GetById(Controller): {ex.Message}");
+                return StatusCode(404, $"Usuario não encontrado: {ex.Message}");
             }
         }
 
@@ -65,7 +64,7 @@ namespace ProcessoSeletivo_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, $"Erro do GetByEmail(Controller): {ex.Message}");
+                return StatusCode(404, $"Usuario não encontrado: {ex.Message}");
             }
         }
 
@@ -74,21 +73,19 @@ namespace ProcessoSeletivo_API.Controllers
         {
             try
             {
-                var validatorResult = _inputValidator.Validate(candidato);
-                if (!validatorResult.IsValid)
-                {
-                    return BadRequest(validatorResult.Errors);
-                }
-
                 var newRegister = _serviceCandidato.Create(candidato);
 
                 _mailService.SendEmail(candidato.Email, subject, mensageOfConfimation.message);
 
                 return CreatedAtAction(nameof(GetById), new { id = newRegister.Id }, candidato);
             }
+            catch( ValidationException ex)
+            {
+                return BadRequest(new {errors = ex.Errors.Select(e => e.ErrorMessage)});
+            }
             catch (Exception ex)
             {
-                return StatusCode(400, $"Erro do Post(Controller): {ex.Message}");
+                return StatusCode(500, $"Erro de criação por parte do servidor(Controller): {ex.Message}");
             }
         }
 
@@ -104,7 +101,7 @@ namespace ProcessoSeletivo_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, $"Erro do Put(Controller): {ex.Message}");
+                return StatusCode(500, $"Erro de atualização por parte do servidor(Controller): {ex.Message}");
             }
         }
 
@@ -119,7 +116,7 @@ namespace ProcessoSeletivo_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, $"Erro do Delete(Controller): {ex.Message}");
+                return StatusCode(500, $"Erro no delete(Controller): {ex.Message}");
             }
         }
     }
